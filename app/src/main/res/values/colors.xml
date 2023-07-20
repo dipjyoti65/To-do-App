@@ -13,5 +13,22 @@
     <!--    color Secondary-->
     <color name="Melrose">#b49bfc</color>
     <!--    color bg-->
-    <color name="Martinique">#3b3252</color>
+    <color name="Valhalla">#2a1b52</color>
+<!--    color for textView-->
+    <color name="litewhite">#eeeee4</color>
+<!--    color for text-->
+    <color name="Dove_Gray">#626262</color>
+
+    <!--color for primary-->
+    <color name="sky_blue">#7289da</color>
+    <!--    color Secondary-->
+    <color name="shark">#2c2f33</color>
+    <!--    color bg-->
+    <color name="Gull_Gray">#99aab5</color>
+    <!--    color for textView-->
+    <color name="litewhite">#eeeee4</color>
+    <!--    color for text-->
+    <color name="shark2">#23272a</color>
+
+
 </resources>

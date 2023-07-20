@@ -17,8 +17,10 @@
             >
             <LinearLayout
                 android:id="@+id/topBar"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_5sdp"
                 android:orientation="horizontal">
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollViewCategories"
@@ -28,22 +30,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <TextView
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/categoryPersonal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Personal"
-                            android:padding="16sp"
-                            android:clickable="true"
-                            android:background="?attr/selectableItemBackground"/>
-                        <TextView
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:backgroundTint="@color/shark"
+                            app:cornerRadius="@dimen/_20sdp"
+
+                           />
+
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/categoryWork"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Work"
-                            android:padding="16dp"
-                            android:clickable="true"
-                            android:background="?attr/selectableItemBackground"/>
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:backgroundTint="@color/shark"
+                            app:cornerRadius="@dimen/_20sdp"
+
+                          />
 
                         <!-- Add more category views as needed -->
                     </LinearLayout>
@@ -82,7 +89,7 @@
                     android:layout_marginEnd="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_540sdp"
                     android:id="@+id/newTask"
-                    app:tint="@color/Deluge"
+                    app:tint="@color/sky_blue"
                     app:pressedTranslationZ="10dp"
                     />
 
@@ -105,7 +112,9 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
         android:layout_gravity="start"
-        app:itemIconTint="@color/Deluge"
-        app:itemTextColor="@color/Deluge"
+        app:itemIconTint="@color/sky_blue"
+        app:itemTextColor="@color/sky_blue"
         />
+
+
 </androidx.drawerlayout.widget.DrawerLayout>
