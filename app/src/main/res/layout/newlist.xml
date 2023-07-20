@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_280sdp"
+    android:layout_height="@dimen/_200sdp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@drawable/create_list_bg"
+    android:padding="@dimen/_15sdp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/createlist"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:text="Create new list"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"/>
+
+    <EditText
+        android:id="@+id/addnewlist"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_below="@+id/createlist"
+        android:hint="Input here."
+        android:gravity="start"
+        android:padding="@dimen/_10sdp"
+        android:background="@drawable/textviewshapebg"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addnewlist"
+        android:text="CANCEL"
+        android:textSize="@dimen/_15ssp"
+        android:layout_marginStart="@dimen/_140sdp"
+        android:textStyle="bold"
+        android:textColor="@color/Gull_Gray"
+        />
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addnewlist"
+        android:text="SAVE"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_alignParentEnd="true"
+        android:textSize="@dimen/_15ssp"
+        android:textStyle="bold"
+        android:textColor="@color/sky_blue"/>
+
+</RelativeLayout>

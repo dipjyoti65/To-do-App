@@ -5,27 +5,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/dialogbkg">
-    
+
     <EditText
         android:id="@+id/enterTask"
-        android:layout_margin="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/textviewshapebg"
-        android:hint="Input new text here"
-        android:textSize="@dimen/_15ssp"
-        android:padding="@dimen/_15sdp"
         android:gravity="center_vertical"
-        />
+        android:hint="Input new task here"
+        android:padding="@dimen/_15sdp"
+        android:textSize="@dimen/_15ssp" />
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:text="No Category"
+        android:text="No list"
         android:layout_gravity="start"
         android:backgroundTint="@color/shark"
-        app:cornerRadius="@dimen/_20sdp"
+        app:cornerRadius="@dimen/_5sdp"
         android:layout_below="@+id/enterTask"
         android:layout_alignParentStart="true"
         />
@@ -37,7 +39,7 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="Save"
         android:layout_gravity="end"
-        app:cornerRadius="@dimen/_20sdp"
+        app:cornerRadius="@dimen/_5sdp"
         android:layout_below="@+id/enterTask"
         android:layout_alignParentEnd="true"/>
 
