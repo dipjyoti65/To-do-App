@@ -26,9 +26,9 @@
     <!--    color bg-->
     <color name="Gull_Gray">#99aab5</color>
     <!--    color for textView-->
-    <color name="litewhite">#eeeee4</color>
-    <!--    color for text-->
     <color name="shark2">#23272a</color>
+    <!--  color for uncheck button  -->
+    <color name="Rose">#Ff0059</color>
 
 
 </resources>

@@ -17,7 +17,7 @@
             >
 
                 <HorizontalScrollView
-                    android:id="@+id/horizontalScrollViewCategories"
+                    android:id="@+id/horizontelList"
                     android:layout_width="match_parent"
                     android:padding="@dimen/_5sdp"
                     android:layout_height="wrap_content"
@@ -66,34 +66,39 @@
 
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/listviewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/_50sdp"
-                android:layout_below="@+id/horizontalScrollViewCategories"
+                android:layout_below="@+id/horizontelList"
                 android:orientation="vertical">
-                  <ListView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    >
-                  </ListView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/taskList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    app:fabSize="auto"
+                    app:tint="@color/sky_blue"
+                    android:id="@+id/fab"
+                    android:layout_gravity="end"
+                    app:pressedTranslationZ="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/baseline_add_circle_24"
                     android:backgroundTint="@color/white"
-                    app:maxImageSize="@dimen/_50sdp"
-                    android:layout_gravity="end"
-                    app:fabSize="auto"
+                    app:maxImageSize="@dimen/_53sdp"
                     android:layout_marginEnd="@dimen/_25sdp"
-                    android:layout_marginTop="@dimen/_540sdp"
-                    android:id="@+id/newTask"
-                    app:tint="@color/sky_blue"
-                    app:pressedTranslationZ="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="@dimen/_30sdp"
                     />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavbar"
@@ -105,15 +110,5 @@
                 />
         </RelativeLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/nav_view"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu"
-        android:layout_gravity="start"
-        app:itemIconTint="@color/Deluge"
-        app:itemTextColor="@color/Deluge"
-        />
 
 </androidx.drawerlayout.widget.DrawerLayout>
