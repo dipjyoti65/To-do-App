@@ -2,6 +2,7 @@ package com.example.to_do_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -15,12 +16,18 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +36,12 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     HorizontalScrollView horizontalScrollView;
     RecyclerView recyclerView;
+    RelativeLayout bottomsheet;
     BottomNavigationView bottomNavigationView;
+    LinearLayout task_layout;
+    TextView newtask;
+
+    List<String> mItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         horizontalScrollView =findViewById(R.id.horizontelList);
         recyclerView        = findViewById(R.id.taskList);
         bottomNavigationView = findViewById(R.id.bottomNavbar);
+
+
+        mItems = new ArrayList<>();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,10 +61,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        recyclerView = findViewById(R.id.taskList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        task_adapter c = new task_adapter(mItems);
+        recyclerView.setAdapter(c);
+
     }
 
     public void  showBottomSheetDialog(){
 
+        bottomsheet = findViewById(R.id.bottomsheet);
+        task_layout = findViewById(R.id.task_layout);
+        newtask = findViewById(R.id.newtask);
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
@@ -58,21 +82,25 @@ public class MainActivity extends AppCompatActivity {
         EditText  entertask = dialog.findViewById(R.id.enterTask);
         saveButton = dialog.findViewById(R.id.saveButton);
         showList = dialog.findViewById(R.id.showList);
-        entertask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "write task here", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "save button", Toast.LENGTH_SHORT).show();
+                // Get the text from edit text
+                String value = entertask.getText().toString();
+
+                // Add the task to the mItems
+                mItems.add(value);
+
+                // Notify the adapter that the data has changed
+                recyclerView.getAdapter().notifyDataSetChanged();
+
+                // Close the bottomsheetlayout
+                  dialog.dismiss();
             }
         });
 
-        assert showList != null;
+
         showList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,5 +113,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+
     }
 }

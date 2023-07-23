@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_80sdp"
+    android:id="@+id/task_layout"
+    android:layout_height="@dimen/_70sdp"
     android:layout_marginHorizontal="@dimen/_10sdp"
     android:layout_marginVertical="@dimen/_15sdp"
     android:orientation="horizontal"
@@ -21,12 +22,16 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/_10sdp">
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/newtask"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="@dimen/_20sdp"
             android:paddingHorizontal="@dimen/_10sdp"
             android:background="@android:color/transparent"
+            android:text="newtask"
+            android:textSize="@dimen/_17sdp"
+            android:gravity="center"
             />
 
     </HorizontalScrollView>
