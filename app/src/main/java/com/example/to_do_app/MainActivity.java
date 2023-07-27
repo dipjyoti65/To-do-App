@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -32,16 +34,19 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton fab;
-    Button saveButton , showList;
+    Button saveButton , showList ;
     DrawerLayout drawerLayout;
     HorizontalScrollView horizontalScrollView;
     RecyclerView recyclerView;
     RelativeLayout bottomsheet;
     BottomNavigationView bottomNavigationView;
-    LinearLayout task_layout;
-    TextView newtask;
+    LinearLayout task_layout, categoryLayout;
+    TextView newtask , saveNewList  ,cancelList , NewList , newTextView;
+    EditText addnewlist;
 
     List<String> mItems;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         horizontalScrollView =findViewById(R.id.horizontelList);
         recyclerView        = findViewById(R.id.taskList);
         bottomNavigationView = findViewById(R.id.bottomNavbar);
+        NewList = findViewById(R.id.NewList);
 
 
         mItems = new ArrayList<>();
@@ -61,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        NewList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {CreateList();}
+        });
 
         recyclerView = findViewById(R.id.taskList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(c);
 
     }
+
 
     public void  showBottomSheetDialog(){
 
@@ -115,4 +126,50 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
+
+    public void CreateList(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.newlist);
+
+        saveNewList = dialog.findViewById(R.id.saveNewList);
+        addnewlist = dialog.findViewById(R.id.addnewlist);
+        cancelList = dialog.findViewById(R.id.cancelList);
+        categoryLayout =findViewById(R.id.categoryLayout);
+
+        saveNewList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = addnewlist.getText().toString();
+                TextView b = new TextView(MainActivity.this);
+                b.setText(text);
+                b.setTextColor(getResources().getColor(R.color.white));
+                b.setBackgroundResource(R.drawable.custom_button);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.
+                        LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(10 , 0 , 10 , 0);
+                b.setLayoutParams(layoutParams);
+                Toast.makeText(MainActivity.this, "list-Added", Toast.LENGTH_SHORT).show();
+                categoryLayout.addView(b);
+            }
+        });
+
+        cancelList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.CENTER);
+
+    }
+
+
+
 }

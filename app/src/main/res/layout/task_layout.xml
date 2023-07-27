@@ -31,8 +31,7 @@
             android:background="@android:color/transparent"
             android:text="newtask"
             android:textSize="@dimen/_17sdp"
-            android:gravity="center"
-            />
+            android:gravity="center" />
 
     </HorizontalScrollView>
 

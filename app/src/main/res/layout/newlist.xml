@@ -28,6 +28,7 @@
         android:background="@drawable/textviewshapebg"/>
 
     <TextView
+        android:id="@+id/cancelList"
         android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_height="wrap_content"
@@ -37,10 +38,11 @@
         android:layout_marginStart="@dimen/_140sdp"
         android:textStyle="bold"
         android:textColor="@color/Gull_Gray"
-        />
+        android:clickable="true"
+       />
 
     <TextView
-        android:id="@+id/save"
+        android:id="@+id/saveNewList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/addnewlist"
@@ -49,6 +51,8 @@
         android:layout_alignParentEnd="true"
         android:textSize="@dimen/_15ssp"
         android:textStyle="bold"
-        android:textColor="@color/sky_blue"/>
+        android:textColor="@color/sky_blue"
+        android:clickable="true"
+        />
 
 </RelativeLayout>

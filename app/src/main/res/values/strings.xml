@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">To_Do_App</string>
-    <string name ="task_layout">task_layout</string>
+    <string name="task_layout">task_layout</string>
 </resources>
