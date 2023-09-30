@@ -10,108 +10,108 @@
     tools:openDrawer="start"
     tools:context=".MainActivity">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <HorizontalScrollView
+            android:id="@+id/horizontelList"
+            android:layout_width="match_parent"
+            android:padding="@dimen/_5sdp"
+            android:layout_height="wrap_content"
+            android:background="@color/litewhite">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/categoryLayout"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/NewList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+ New list"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:textColor="@color/white"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:background="@drawable/custom_button"
+                    android:backgroundTint="@color/sky_blue"
+                    />
+
+                <TextView
+                    android:id="@+id/Personal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Personal"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:textColor="@color/white"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:background="@drawable/custom_button"
+                    android:textStyle=""
+                    />
+
+                <!--                        <TextView-->
+                <!--                            android:id="@+id/Work"-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:text="Work"-->
+
+                <!--                            android:paddingHorizontal="@dimen/_10sdp"-->
+                <!--                            android:paddingVertical="@dimen/_5sdp"-->
+                <!--                            android:textColor="@color/white"-->
+                <!--                            android:layout_marginHorizontal="@dimen/_5sdp"-->
+                <!--                            android:background="@drawable/custom_button"-->
+
+                <!--                          />-->
+
+                <!-- Add more category views as needed -->
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+
+
+        <FrameLayout
+            android:id="@+id/listviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:layout_below="@+id/horizontelList"
+            android:orientation="vertical" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/taskList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </FrameLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            app:tint="@color/sky_blue"
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_add_circle_24"
+            android:backgroundTint="@color/white"
+            app:maxImageSize="@dimen/_52sdp"
+            android:layout_marginStart="@dimen/_245sdp"
+            android:layout_marginTop="@dimen/_470sdp" />
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontelList"
-                    android:layout_width="match_parent"
-                    android:padding="@dimen/_5sdp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/litewhite">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/categoryLayout"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/NewList"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+ New list"
-                            android:paddingHorizontal="@dimen/_10sdp"
-                            android:paddingVertical="@dimen/_5sdp"
-                            android:textColor="@color/white"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:background="@drawable/custom_button"
-                            android:backgroundTint="@color/sky_blue"
-                            />
-
-                        <TextView
-                            android:id="@+id/Personal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Personal"
-                            android:paddingHorizontal="@dimen/_10sdp"
-                            android:paddingVertical="@dimen/_5sdp"
-                            android:textColor="@color/white"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:background="@drawable/custom_button"
-                            android:textStyle=""
-                           />
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/Work"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="Work"-->
-
-<!--                            android:paddingHorizontal="@dimen/_10sdp"-->
-<!--                            android:paddingVertical="@dimen/_5sdp"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:layout_marginHorizontal="@dimen/_5sdp"-->
-<!--                            android:background="@drawable/custom_button"-->
-
-<!--                          />-->
-
-                        <!-- Add more category views as needed -->
-                    </LinearLayout>
-
-                </HorizontalScrollView>
-
-
-
-            <FrameLayout
-                android:id="@+id/listviewContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/_50sdp"
-                android:layout_below="@+id/horizontelList"
-                android:orientation="vertical" >
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/taskList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-            </FrameLayout>
-
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                    app:tint="@color/sky_blue"-->
-<!--                    android:id="@+id/fab"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@drawable/baseline_add_circle_24"-->
-<!--                    android:backgroundTint="@color/white"-->
-<!--                    app:maxImageSize="@dimen/_52sdp"-->
-<!--                    android:layout_marginStart="@dimen/_245sdp"-->
-<!--                    android:layout_marginTop="@dimen/_470sdp" />-->
-
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomNavbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                app:labelVisibilityMode="labeled"
-                app:menu="@menu/bottom_menu" />
-        </RelativeLayout>
+            android:layout_alignParentBottom="true"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_menu" />
+    </RelativeLayout>
 
 
 

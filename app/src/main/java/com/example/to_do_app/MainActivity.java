@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,10 +37,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -51,182 +56,131 @@ public class MainActivity extends AppCompatActivity{
     LinearLayout task_layout, categoryLayout;
     TextView  newtask , saveNewList  ,cancelList , NewList , newTextView , Personal , categoryTextview;
     EditText addnewlist;
-    List<String> mItems;
- //   List<TextView> categoryTextview;
-    List<Fragment> categoryFragmentMap;
-    List<Integer> categoryID;
+    ArrayList<model>dataholder;
 
+    DBhelper DB;
+    // ArrayList <String> task;
     int position = 0;
     int  i =0;
     int categoryNo;
     FrameLayout frameLayout;
 
+    task_adapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-     //   fab = findViewById(R.id.fab);
+        //   fab = findViewById(R.id.fab);
         drawerLayout = findViewById(R.id.drawer_layout);
         horizontalScrollView =findViewById(R.id.horizontelList);
         frameLayout = findViewById(R.id.frameLayout);
-     //   recyclerView        = findViewById(R.id.taskList);
+        //   recyclerView        = findViewById(R.id.taskList);
         bottomNavigationView = findViewById(R.id.bottomNavbar);
         NewList = findViewById(R.id.NewList);
         Personal = findViewById(R.id.Personal);
         categoryLayout = findViewById(R.id.categoryLayout);
-       // categoryNo= categoryLayout.getChildCount();
-       // Personal.setOnClickListener(getOnClick(i));
+        dataholder = new ArrayList<>();
+        DB = new DBhelper(this);
+        // task = new ArrayList<>();
+        fab = findViewById(R.id.fab);
+        // getting our task array
+        // list from db handler class.
+        dataholder = DB.getData();
 
-        mItems = new ArrayList<>();
-        categoryFragmentMap = new ArrayList<>();
-        categoryFragmentMap.add(new MyFragment());
-        // OnClickListener applied to floatingactionbutton
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showBottomSheetDialog();
-//            }
-//        });
-
-       FragmentManager f = getSupportFragmentManager();
-       FragmentTransaction fragmentTransaction = f.beginTransaction();
-       fragmentTransaction.replace(R.id.listviewContainer,new Personal_fragment());
-       fragmentTransaction.addToBackStack(null);
-       fragmentTransaction.commit();
-        //Creating new list by clicking on newlist textview of horizontel scrollview
-        NewList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {CreateList();}
-        });
+        // on below line passing our array list to our adapter class.
+        adapter = new task_adapter(dataholder,MainActivity.this);
         recyclerView = findViewById(R.id.taskList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        task_adapter c = new task_adapter(mItems);
-        recyclerView.setAdapter(c);
 
-    }
+        // setting layout manager for our recycler view.
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        // setting our adapter to recycler view.
+        recyclerView.setAdapter(adapter);
+        //  d.showData();
+        if (isTableExists(DB.getWritableDatabase(), "Taskdetails")) {
+
+        }
+        else{
+
+            Toast.makeText(this, "No Table", Toast.LENGTH_SHORT).show();
+        }
 
 
 
-//    public void  showBottomSheetDialog(){
-//
-////        bottomsheet = findViewById(R.id.bottomsheet);
-////        task_layout = findViewById(R.id.task_layout);
-////        newtask = findViewById(R.id.newtask);
-//        final Dialog dialog = new Dialog(this);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.bottomsheetlayout);
-//        EditText  entertask = dialog.findViewById(R.id.enterTask);
-//        saveButton = dialog.findViewById(R.id.saveButton);
-//        showList = dialog.findViewById(R.id.showList);
-//
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Get the text from edit text
-//                String value = entertask.getText().toString();
-//
-//                // Add the task to the mItems
-//                mItems.add(value);
-//
-//                // Notify the adapter that the data has changed
-//                recyclerView.getAdapter().notifyDataSetChanged();
-//
-//                // Close the bottomsheetlayout
-//                  dialog.dismiss();
-//            }
-//        });
-//
-//
-//        showList.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(MainActivity.this, "showlist", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//
-//
-//        dialog.show();
-//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-//        dialog.getWindow().setGravity(Gravity.BOTTOM);
-//
-//    }
-
-    public void CreateList(){
-
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.newlist);
-
-        saveNewList = dialog.findViewById(R.id.saveNewList);
-        addnewlist = dialog.findViewById(R.id.addnewlist);
-        cancelList = dialog.findViewById(R.id.cancelList);
-        categoryLayout =findViewById(R.id.categoryLayout);
-
-        saveNewList.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                i++;
-                String text = addnewlist.getText().toString();
-                categoryTextview = new TextView(MainActivity.this);
-                categoryTextview.setText(text);
-                categoryTextview.setTextColor(getResources().getColor(R.color.white));
-                categoryTextview.setBackgroundResource(R.drawable.custom_button);
-                categoryTextview.setId(androidx.core.R.id.text);
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.
-                        LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(10 , 0 , 10 , 0);
-                categoryTextview.setLayoutParams(layoutParams);
-                Toast.makeText(MainActivity.this, "list-Added", Toast.LENGTH_SHORT).show();
-                categoryLayout.addView( categoryTextview);
-                categoryTextview.setOnClickListener(getOnClick(i));
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.bottomsheetlayout);
+                EditText entertask = dialog.findViewById(R.id.enterTask);
+                saveButton = dialog.findViewById(R.id.saveButton);
+                showList = dialog.findViewById(R.id.showList);
+                DB = new DBhelper(dialog.getContext());
+
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Get the text from edit text
+                        String newdata = entertask.getText().toString().trim();
+                        if(!newdata.isEmpty()){
+                            DB.addrecord(newdata);
+                            entertask.getText().clear();
+                            Toast.makeText(dialog.getContext(), "New Entry Inserted", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(dialog.getContext(), "Entry Not Inserted", Toast.LENGTH_SHORT).show();
+                        }
+                        dataholder = DB.getData();
+
+                        // on below line passing our array list to our adapter class.
+                        adapter = new task_adapter(dataholder,MainActivity.this);
+                        recyclerView = findViewById(R.id.taskList);
+
+                        // setting layout manager for our recycler view.
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false);
+                        recyclerView.setLayoutManager(linearLayoutManager);
+
+                        // setting our adapter to recycler view.
+                        recyclerView.setAdapter(adapter);
+                        // Notify the adapter that the data has changed
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        // Close the bottomsheetlayout
+                        dialog.dismiss();
+                    }
+                });
+//                showList.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Toast.makeText(MainActivity.this, "showlist", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+                dialog.show();
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.getWindow().setGravity(Gravity.BOTTOM);
             }
         });
-
-        cancelList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.CENTER);
-
+    }
+    private void saveData(model data){
+        SQLiteDatabase db = DB.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("task", String.valueOf(data));
+        long newRowId = db.insert("Taskdetails",null,cv);
+        if(newRowId!= -1){
+            dataholder.add(data);
+            adapter.notifyItemInserted(dataholder.size()-1);
+        }
     }
 
-    private View.OnClickListener getOnClick(final int i){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // categoryFragmentMap.add(new MyFragment());
-                Toast.makeText(MainActivity.this, "clicked "+i, Toast.LENGTH_SHORT).show();
-                loadFragment(new MyFragment());
-            }
-        };
-
+    public boolean isTableExists(SQLiteDatabase DB , String tableName){
+        Cursor cursor = DB.rawQuery("Select name from sqlite_master where type='table' AND name=?",new String[]{tableName});
+        return cursor!= null && cursor.moveToFirst();
     }
-
-    private void loadFragment(Fragment fragment){
-
-        // create a FragmentManager
-        FragmentManager fm = getSupportFragmentManager();
-        // create a FragmentTransaction to begin the transaction and replace the Fragment
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        // replace the FrameLayout with new Fragment
-        fragmentTransaction.replace(R.id.listviewContainer,fragment);
-        fragmentTransaction.addToBackStack(null);
-        // save the changes
-        fragmentTransaction.commit();
-
-    }
-
 
 }
 
