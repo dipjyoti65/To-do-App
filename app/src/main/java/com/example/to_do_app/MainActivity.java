@@ -1,16 +1,20 @@
 package com.example.to_do_app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -19,9 +23,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -30,11 +36,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.example.to_do_app.databinding.ActivityLoginBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -55,17 +64,25 @@ public class MainActivity extends AppCompatActivity{
     BottomNavigationView bottomNavigationView;
     LinearLayout task_layout, categoryLayout;
     TextView  newtask , saveNewList  ,cancelList , NewList , newTextView , Personal , categoryTextview;
-    EditText addnewlist;
+
     ArrayList<model>dataholder;
 
     DBhelper DB;
     // ArrayList <String> task;
-    int position = 0;
-    int  i =0;
-    int categoryNo;
     FrameLayout frameLayout;
 
     task_adapter adapter;
+    SQLiteDatabase mDatabase;
+
+    ActivityLoginBinding binding;
+    private task_adapter.OnItemClickListener mListener;
+
+    private SharedPreferences sharedPreferences;
+    private int primaryKeyCounter;
+
+
+     int value=1;
+        int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +99,7 @@ public class MainActivity extends AppCompatActivity{
         categoryLayout = findViewById(R.id.categoryLayout);
         dataholder = new ArrayList<>();
         DB = new DBhelper(this);
+        mDatabase = DB.getWritableDatabase();
         // task = new ArrayList<>();
         fab = findViewById(R.id.fab);
         // getting our task array
@@ -92,20 +110,32 @@ public class MainActivity extends AppCompatActivity{
         adapter = new task_adapter(dataholder,MainActivity.this);
         recyclerView = findViewById(R.id.taskList);
 
+        sharedPreferences=getSharedPreferences("to-do_app_pref",Context.MODE_PRIVATE);
+        primaryKeyCounter=sharedPreferences.getInt("primary_key_counter",0);
+
         // setting layout manager for our recycler view.
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         // setting our adapter to recycler view.
         recyclerView.setAdapter(adapter);
-        //  d.showData();
-        if (isTableExists(DB.getWritableDatabase(), "Taskdetails")) {
 
-        }
-        else{
+        //creating binding to add email to each task record
+        binding=ActivityLoginBinding.inflate(getLayoutInflater());
 
-            Toast.makeText(this, "No Table", Toast.LENGTH_SHORT).show();
-        }
+       adapter.setOnItemClickListener(new task_adapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(int position) {
+
+           }
+
+           @Override
+           public void onDeleteClick(int position) {
+             //  Toast.makeText(MainActivity.this, "Postion is : "+position, Toast.LENGTH_SHORT).show();
+                removeItem(position);
+           }
+       });
+
 
 
 
@@ -117,6 +147,7 @@ public class MainActivity extends AppCompatActivity{
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.bottomsheetlayout);
                 EditText entertask = dialog.findViewById(R.id.enterTask);
+                TextView valueID = dialog.findViewById(R.id.valueID);
                 saveButton = dialog.findViewById(R.id.saveButton);
                 showList = dialog.findViewById(R.id.showList);
                 DB = new DBhelper(dialog.getContext());
@@ -124,12 +155,18 @@ public class MainActivity extends AppCompatActivity{
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         // Get the text from edit text
                         String newdata = entertask.getText().toString().trim();
+                        String primaryKey=Integer.toString(primaryKeyCounter);
+                        String UserEmail = LoginActivity.UserEmail;
                         if(!newdata.isEmpty()){
-                            DB.addrecord(newdata);
+
+                            DB.addrecord(primaryKey,newdata,UserEmail);
+                            incrementPrimaryKeyCounter();
                             entertask.getText().clear();
-                            Toast.makeText(dialog.getContext(), "New Entry Inserted", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(dialog.getContext(), "email"+UserEmail, Toast.LENGTH_SHORT).show();
                         }
                         else{
                             Toast.makeText(dialog.getContext(), "Entry Not Inserted", Toast.LENGTH_SHORT).show();
@@ -146,6 +183,19 @@ public class MainActivity extends AppCompatActivity{
 
                         // setting our adapter to recycler view.
                         recyclerView.setAdapter(adapter);
+
+                        adapter.setOnItemClickListener(new task_adapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+
+                            }
+
+                            @Override
+                            public void onDeleteClick(int position) {
+                                //  Toast.makeText(MainActivity.this, "Postion is : "+position, Toast.LENGTH_SHORT).show();
+                                removeItem(position);
+                            }
+                        });
                         // Notify the adapter that the data has changed
                         recyclerView.getAdapter().notifyDataSetChanged();
                         // Close the bottomsheetlayout
@@ -165,22 +215,38 @@ public class MainActivity extends AppCompatActivity{
                 dialog.getWindow().setGravity(Gravity.BOTTOM);
             }
         });
-    }
-    private void saveData(model data){
-        SQLiteDatabase db = DB.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("task", String.valueOf(data));
-        long newRowId = db.insert("Taskdetails",null,cv);
-        if(newRowId!= -1){
-            dataholder.add(data);
-            adapter.notifyItemInserted(dataholder.size()-1);
-        }
+
+        // Set an OnNavigationItemSelectedListener for the BottomNavigationView
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.calender:
+                       Intent intent = new Intent(MainActivity.this,CalenderActivity.class);
+                       startActivity(intent);
+                    case R.id.drawer:
+
+                    case R.id.task:
+
+                    case R.id.profile:
+                }
+                return false;
+            }
+        });
     }
 
-    public boolean isTableExists(SQLiteDatabase DB , String tableName){
-        Cursor cursor = DB.rawQuery("Select name from sqlite_master where type='table' AND name=?",new String[]{tableName});
-        return cursor!= null && cursor.moveToFirst();
+    private void incrementPrimaryKeyCounter(){
+        primaryKeyCounter++;
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putInt("primary_key_counter",primaryKeyCounter);
+        editor.apply();
     }
 
+    public void removeItem(int position){
+        mDatabase.delete("Taskdetails","primaryKey=?",new String[]{String.valueOf(position)});
+      //  dataholder.remove(position);
+        adapter.notifyItemRemoved(position);
+
+    }
 }
 

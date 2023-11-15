@@ -14,7 +14,7 @@
         android:title="Calender"
         android:icon="@drawable/baseline_calendar_month_24"/>
     <item
-        android:id="@+id/mine"
-        android:title="Mine"
+        android:id="@+id/profile"
+        android:title="Profile"
         android:icon="@drawable/baseline_account_circle_24"/>
 </menu>

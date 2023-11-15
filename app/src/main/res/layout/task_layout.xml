@@ -8,31 +8,48 @@
     android:orientation="horizontal"
     android:background="@drawable/create_task_bg">
 
-    <ToggleButton
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:background="@drawable/btn_radio_selector"
-        android:checked="false"
-        android:textOff=""
-        android:textOn=""
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_15sdp"/>
+
     <HorizontalScrollView
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_240sdp"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/_10sdp">
+        android:layout_marginEnd="@dimen/_5sdp">
 
         <TextView
             android:id="@+id/newtask"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="@dimen/_20sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_7sdp"
             android:background="@android:color/transparent"
             android:text="newtask"
+            android:layout_marginStart="@dimen/_6sdp"
             android:textSize="@dimen/_17sdp"
             android:gravity="center" />
-
     </HorizontalScrollView>
+    <LinearLayout
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <ToggleButton
+            android:id="@+id/deleteTask"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:background="@drawable/baseline_delete_24"
+            android:checked="false"
+            android:textOff=""
+            android:textOn=""
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_27sdp"
 
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textID"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
 </LinearLayout>
